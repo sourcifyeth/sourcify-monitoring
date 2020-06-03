@@ -1,7 +1,7 @@
 #
 # Starts the latest loki/grafana/promtail/jaeger stack.  After running check:
 #
-#  grafana:  http://localhost:3000
+#  grafana:  http://localhost:11000
 #  jaeger:   http://localhost:16686
 #  loki:     http://localhost:3100
 #  promtail: http://localhost:9080
@@ -9,6 +9,7 @@
 version: "3.5"
 services:
   loki:
+   container_name: loki
    image: grafana/loki:latest
    volumes:
    - ./config:/etc/config
@@ -23,14 +24,20 @@ services:
    - JAEGER_SAMPLER_TYPE=const
    - JAEGER_SAMPLER_PARAM=1
   grafana:
+    container_name: grafana
     image: grafana/grafana:latest
     volumes:
     - ./datasource:/etc/grafana/provisioning/datasources
     ports:
     - "11000:3000"
+    # logging:
+    #   driver: loki
+    #   options:
+    #     loki-url: "http://admin:admin@localhost:3001/api/v1/push"
     # extra_hosts:
     # - "loki:<host ip>"
   prometheus:
+    container_name: prometheus
     image: prom/prometheus:latest
     volumes:
     - ./config:/etc/config
@@ -42,11 +49,12 @@ services:
     # extra_hosts:
     # - "loki:<host ip>"
   promtail:
+    container_name: promtail
     image: grafana/promtail:latest
     volumes:
     - ./config:/etc/config
     - /var/log:/var/hostlog:ro
-    - ./fakelogs:/tmp/promtail-test:ro
+    # - ./fakelogs:/tmp/promtail-test:ro
     entrypoint:
     - /usr/bin/promtail
     - --config.file=/etc/config/promtail-local-config.yaml
@@ -55,7 +63,13 @@ services:
     # extra_hosts:
     # - "loki:<host ip>"
   jaeger:
+    container_name: jaeger
     image: jaegertracing/all-in-one:latest
     ports:
       - "16686:16686"
       - "6831:6831"
+
+networks:
+  default:
+    external:
+      name: environments_source-verify
