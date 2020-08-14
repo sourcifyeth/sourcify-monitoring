@@ -72,4 +72,4 @@ services:
 networks:
   default:
     external:
-      name: environments_source-verify
+      name: local_source-verify
