@@ -28,8 +28,9 @@ services:
     image: grafana/grafana:latest
     volumes:
     - ./datasource:/etc/grafana/provisioning/datasources
+    - ./config/grafana.ini:/etc/grafana/grafana.ini
     ports:
-    - "11000:3000"
+    - "11000:11000"
     # logging:
     #   driver: loki
     #   options:
