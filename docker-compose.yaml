@@ -6,7 +6,7 @@
 #  loki:     http://localhost:3100
 #  promtail: http://localhost:9080
 #
-version: "3.5"
+version: "3.8"
 services:
   loki:
    container_name: loki
@@ -73,4 +73,4 @@ services:
 networks:
   default:
     external:
-      name: local_source-verify
+      name: source-verify
