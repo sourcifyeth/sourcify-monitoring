@@ -10,7 +10,7 @@ version: "3.8"
 services:
   loki:
    container_name: loki
-   image: grafana/loki:latest
+   image: grafana/loki:3.7.5@sha256:f968164e718f9cbe9f5b0f967f3bb6f9cad5d95cf7ffcaf968cce06c941aed62
    volumes:
    - ./config:/etc/config
    entrypoint:
@@ -25,7 +25,7 @@ services:
    - JAEGER_SAMPLER_PARAM=1
   grafana:
     container_name: grafana
-    image: grafana/grafana:latest
+    image: grafana/grafana:13.1.2@sha256:d177053ab62253815f130d81504f77063baf5fd4ca93299d6048453bd31e047a
     volumes:
     - ./datasource:/etc/grafana/provisioning/datasources
     - ./config/grafana.ini:/etc/grafana/grafana.ini
@@ -39,7 +39,7 @@ services:
     # - "loki:<host ip>"
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:latest
+    image: prom/prometheus:v3.13.2@sha256:508729e0e2d18e11fd742a5a5ca70e557b940a93948c3c95fd0123a6fd538b69
     volumes:
     - ./config:/etc/config
     entrypoint:
@@ -51,7 +51,7 @@ services:
     # - "loki:<host ip>"
   promtail:
     container_name: promtail
-    image: grafana/promtail:latest
+    image: grafana/promtail:3.6.11@sha256:a761cb834cfaeee29745440d4884d6748f0a08d8f68928db1d707018c1dcfbe9
     volumes:
     - ./config:/etc/config
     - /var/log:/var/hostlog:ro
@@ -65,7 +65,7 @@ services:
     # - "loki:<host ip>"
   jaeger:
     container_name: jaeger
-    image: jaegertracing/all-in-one:latest
+    image: jaegertracing/all-in-one:1.76.0@sha256:ab6f1a1f0fb49ea08bcd19f6b84f6081d0d44b364b6de148e1798eb5816bacac
     ports:
       - "16686:16686"
       - "6831:6831"
